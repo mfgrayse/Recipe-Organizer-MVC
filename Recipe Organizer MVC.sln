@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipe Organizer MVC", "Recipe Organizer MVC\Recipe Organizer MVC.csproj", "{C924FF34-2144-4D1A-A03A-6A32F5DCB93A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipe Organizer MVC.Tests", "Recipe Organizer MVC.Tests\Recipe Organizer MVC.Tests.csproj", "{F253C35E-1C60-421A-8903-FEA1C5983E9D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C924FF34-2144-4D1A-A03A-6A32F5DCB93A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C924FF34-2144-4D1A-A03A-6A32F5DCB93A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C924FF34-2144-4D1A-A03A-6A32F5DCB93A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C924FF34-2144-4D1A-A03A-6A32F5DCB93A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F253C35E-1C60-421A-8903-FEA1C5983E9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F253C35E-1C60-421A-8903-FEA1C5983E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F253C35E-1C60-421A-8903-FEA1C5983E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F253C35E-1C60-421A-8903-FEA1C5983E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81E2DE0D-C2D6-4E61-B454-FAEB4D9BA904}
+	EndGlobalSection
+EndGlobal
