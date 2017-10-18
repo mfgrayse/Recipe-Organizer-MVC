@@ -1,0 +1,70 @@
+﻿.logo-recipe {
+    position: absolute;
+    top: -0.3vw;
+    left: 4.9vw;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 3.5vmax;
+    color: steelblue;
+    font-style: italic;
+    /*text-shadow: 0 0 1px white;*/
+}
+
+.logo-organizer {
+    position: absolute;
+    top: 2.6vw;
+    left: 6.4vw;
+    font-family: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif;
+    font-size: 3.5vmax;
+    color: forestgreen;
+    font-style: italic;
+    /*text-shadow: 0 0 1px cornsilk;*/
+}
+
+.no-pad {
+    padding: 0 0 0 0 !important;
+    margin: 0 0 0 0 !important;
+}
+
+
+.upper-left-master {
+    background: #161b2d;
+    height: 8vmax;
+}
+
+.page-pad {
+    padding-left: 2.0vw;
+    padding-right: 2.0vw;
+}
+
+.buttons {
+
+}
+
+.search-options {
+ 
+}
+
+.recipe {
+    height: 400px;
+}
+
+.shadow {
+    box-shadow: 0 0 15px black;
+}
+
+.not-100-width {
+    width: 20.0vw;
+}
+
+.move-search {
+    position: relative;
+    top: 0.8vh;
+    left: 1.9vw;
+}
+
+.center-buttons {
+    position: relative;
+    top: 0.8vh;
+    left: 3.1vw;
+
+}

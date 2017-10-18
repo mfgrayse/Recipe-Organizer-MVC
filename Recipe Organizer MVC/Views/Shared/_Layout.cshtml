@@ -3,12 +3,147 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title: Recipe Organizer MVC</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/MasterPage.css" rel="stylesheet" type="text/css" /> 
+    <style>
+
+    </style>
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+
+    <div class="container-fluid page-pad">
+            <div class="row-fluid">
+                <div class="col-xs-3 no-pad">
+                    <div class="upper-left-master">
+                        <div class="row no-pad">
+                            <div class="logo-recipe no-pad">Recipe</div>
+                            <div class="logo-organizer no-pad">Organizer</div>
+                        </div>
+                    </div>
+
+                    <div class="row"></div>
+                    <div class="row"></div>
+                    <div class="row"></div>
+
+                    @*This div will contain the buttons home, new, edit (only available if recipe loaded).
+                        undo and save will be on edit page, not on master*@
+                                        @*
+          button	The button is a clickable button
+          submit	The button is a submit button (submits form-data)
+          reset	The button is a reset button (resets the form-data to its initial values)
+
+
+
+                                        *@
+                    <form>
+                        <div class="row no-pad well">
+                            <div class="form-group buttons">
+                                <div class="btn-group" role="group">
+                                    <div class="center-buttons">
+                                        <button type="button" class="btn btn-primary">Home</button>
+                                        <button type="button" class="btn btn-primary">New Recipe</button>
+                                        <button type="button" class="btn btn-primary">Edit Recipe</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form>
+                        <div class="row no-pad well">
+                            @*This div will be the search otions under title card (left) dont forget clear search button...*@
+                            <div class="search-options">
+
+                                @*this div is for search textbox and related*@
+                                <div class="form-group move-search">
+                                    <input type="text" class="not-100-width" id="form-group-input" placeholder="Type search term here">
+                                    <button type="button" class="btn btn-info btn-xs">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+
+                                @*this div is for search options and related*@
+                                <div class="form-group">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">Search Options</div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label class="checkbox"><input type="checkbox" value="">Title</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Description</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Ingredients</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Dinner</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Lunch</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Breakfast</label>
+                                                </div>                                            
+                                                <div class="col-xs-6">
+                                                    <label class="checkbox"><input type="checkbox" value="">Instructions</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Cooking Method</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Notes</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Dessert</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Drink</label>
+                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Other</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                @*this div is for search results and related*@
+                                <div class="form-group">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">Search Results</div>
+                                        <div class="panel-body">
+                                            This will be a clickable list of recipes found matching the search conditions.
+                                        </div>
+                                    </div></div>
+
+
+                            </div>
+                        </div>
+                    </form>
+
+                    @*see:
+
+                            <form>
+                          <div class="form-group">
+                            <label for="email">Email address:</label>
+                            <input type="email" class="form-control" id="email">
+                          </div>
+                          <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" id="pwd">
+                          </div>
+                          <div class="checkbox">
+                            <label><input type="checkbox"> Remember me</label>
+                          </div>
+                          <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    *@
+
+
+                </div>
+                <div class="col-xs-9">
+                    @RenderBody()
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -28,12 +163,13 @@
         </div>
     </div>
     <div class="container body-content">
-        @RenderBody()
+        @RenderBody() //This is the body of the non master page
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
-    </div>
+    </div>*@
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
