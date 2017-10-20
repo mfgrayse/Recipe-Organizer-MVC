@@ -50,25 +50,25 @@ namespace Recipe_Organizer_MVC.Models
             theRecipe.Title = TagSubString(htmlRecipe, TITLE_START_TAG, TITLE_END_TAG);
             theRecipe.Description = TagSubString(htmlRecipe, RECIPE_DESCRIPTION_START_TAG, RECIPE_DESCRIPTION_END_TAG);
 
-            theRecipe.Ingredients = TagSubString(htmlRecipe, RECIPE_INGREDIENTS_START_TAG, RECIPE_INGREDIENTS_END_TAG);
+            ////theRecipe.Ingredients = TagSubString(htmlRecipe, RECIPE_INGREDIENTS_START_TAG, RECIPE_INGREDIENTS_END_TAG);
 
-            if (theRecipe.Ingredients.Contains("</li><li>"))
-                theRecipe.Ingredients = theRecipe.Ingredients.Replace("</li><li>", "\r\n");
+            ////if (theRecipe.Ingredients.Contains("</li><li>"))
+            ////    theRecipe.Ingredients = theRecipe.Ingredients.Replace("</li><li>", "\r\n");
 
-            theRecipe.Ingredients = theRecipe.Ingredients.Replace("<li>", string.Empty);
-            theRecipe.Ingredients = theRecipe.Ingredients.Replace("</li>", string.Empty);
-            theRecipe.Ingredients = theRecipe.Ingredients.Replace("\t", string.Empty);
+            ////theRecipe.Ingredients = theRecipe.Ingredients.Replace("<li>", string.Empty);
+            ////theRecipe.Ingredients = theRecipe.Ingredients.Replace("</li>", string.Empty);
+            ////theRecipe.Ingredients = theRecipe.Ingredients.Replace("\t", string.Empty);
 
-            theRecipe.Instructions = TagSubString(htmlRecipe, RECIPE_INSTRUCTIONS_START_TAG, RECIPE_INSTRUCTIONS_END_TAG);
+            ////theRecipe.Instructions = TagSubString(htmlRecipe, RECIPE_INSTRUCTIONS_START_TAG, RECIPE_INSTRUCTIONS_END_TAG);
 
-            if (theRecipe.Instructions.Contains("</p><p>"))
-                theRecipe.Instructions = theRecipe.Instructions.Replace("</p><p>", "\r\n\r\n");
+            ////if (theRecipe.Instructions.Contains("</p><p>"))
+            ////    theRecipe.Instructions = theRecipe.Instructions.Replace("</p><p>", "\r\n\r\n");
 
-            else if (theRecipe.Instructions.Contains("</p>\r\n\t\t<p>"))
-                theRecipe.Instructions = theRecipe.Instructions.Replace("</p>\r\n\t\t<p>", "\r\n\r\n");
+            ////else if (theRecipe.Instructions.Contains("</p>\r\n\t\t<p>"))
+            ////    theRecipe.Instructions = theRecipe.Instructions.Replace("</p>\r\n\t\t<p>", "\r\n\r\n");
 
-            theRecipe.Instructions = theRecipe.Instructions.Replace("<p>", string.Empty);
-            theRecipe.Instructions = theRecipe.Instructions.Replace("</p>", string.Empty);
+            ////theRecipe.Instructions = theRecipe.Instructions.Replace("<p>", string.Empty);
+            ////theRecipe.Instructions = theRecipe.Instructions.Replace("</p>", string.Empty);
 
             theRecipe.Notes = TagSubString(htmlRecipe, RECIPE_NOTES_START_TAG, RECIPE_NOTES_END_TAG);
             theRecipe.CookingInstructions = TagSubString(htmlRecipe, COOK_TYPE_START_TAG, COOK_TYPE_END_TAG);

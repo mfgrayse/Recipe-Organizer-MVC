@@ -10,8 +10,10 @@ namespace Recipe_Organizer_MVC.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Ingredients { get; set; }
-        public string Instructions { get; set; }
+        private string IngredientsString { get; set; }
+        public List<List<string>> Ingredients { get; set; }
+        private string InstructionsString { get; set; }
+        public List<List<string>> Instructions { get; set; }
         public string Notes { get; set; }
         public string CookingInstructions { get; set; }
         public List<string> MealType { get; set; }

@@ -1,0 +1,71 @@
+﻿.recipe-ingredients-item {
+    color: black;
+    font-weight: normal;
+}
+
+.recipe-ingredients-item-border {
+    position: relative;
+    border-bottom: 1px dotted silver;
+    width: 80%;
+    left: 3vw;
+}
+
+.recipe-ingredients-quantity {
+    text-align: right;
+    color: forestgreen;
+    font-weight: bold;
+    white-space: nowrap;
+}
+ 
+.recipe-directions-item {
+    list-style: none;
+    /*position: relative;
+    margin: 0 0 15px 45px;*/
+}
+
+.recipe-directions-counter-box {
+    position: relative;
+    width: 20px;
+    /*content: counter(li);
+    counter-increment: li;*/
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 2.3vh;
+    color: black;
+    background-color: #dff0d8;
+    text-align: center;
+    -webkit-font-smoothing: auto;
+    box-sizing: border-box;
+    top: 0.7vh;
+}
+
+.recipe-directions-counter {
+    position: relative;
+    top: -0.2vh;
+}
+
+.recipe-instruction-item-pad {
+    padding-right: 3.0vw;
+}
+
+.recipe-instructions-pad {
+    padding: 2.7vh 2.9vw 2.0vh 0vw;
+}
+
+.recipe-color-blue {
+    background-color: #d9edf7; 
+}
+
+.recipe-color-green {
+    background-color: #dff0d8;
+}
+
+.jumbotron-pad {
+    padding-top: 2.0vh;
+    padding-bottom: 2.0vh;
+}
+
+.recipe-baking-pad {
+    position: relative;
+    top: -1vh;
+    padding-bottom: 1.7vh;
+}
