@@ -1,7 +1,11 @@
 ﻿//GitHub repo info: https://github.com/mfgrayse/Recipe-Organizer-MVC
 //CSS examples: https://www.bettycrocker.com/recipes/ultimate-chocolate-chip-cookies/77c14e03-d8b0-4844-846d-f19304f61c57
 // and http://www.delish.com/cooking/recipe-ideas/recipes/a49067/chicken-noodle-soup-casserole-recipe/
-
+//browser size: https://www.webpagefx.com/tools/whats-my-browser-size/
+//vert phone HxW: ~560x445
+//horiz phone HxW: ~380x680
+//preferred desktop HxW: ~835x1400 
+//estimated tablet HxW: ~580x1000
 using System;
 using System.Collections.Generic;
 using System.Linq;

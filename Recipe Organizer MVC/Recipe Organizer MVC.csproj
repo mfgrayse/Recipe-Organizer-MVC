@@ -146,10 +146,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IRecipeSectionPart.cs" />
     <Compile Include="Models\ConvertOldVersion.cs" />
     <Compile Include="Models\FileIOXlsx.cs" />
+    <Compile Include="Models\Ingredient.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\RecipeCollection.cs" />
+    <Compile Include="Models\RecipeIngredientPart.cs" />
+    <Compile Include="Models\RecipeInstructionPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

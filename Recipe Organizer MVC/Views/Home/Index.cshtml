@@ -9,6 +9,12 @@
 
 </head>
 
+
+@{ 
+    Recipe_Organizer_MVC.Models.ConvertOldVersion oldVer = new Recipe_Organizer_MVC.Models.ConvertOldVersion();
+    int x = 0;
+}
+
 <div class="well">
 
 
@@ -30,7 +36,7 @@
     <div class="row">
         <div class="col-xs-5">
             <div class="panel panel-info">
-                <div class="panel-heading text-center">Ingredients</div>
+                <div class="panel-heading text-center">Ingredients (need larger font size)</div>
                 <div class="panel-body">
 
 
@@ -69,9 +75,10 @@
             </div>
 
         </div>
+
         <div class="col-xs-7">
             <div class="panel panel-info">
-                <div class="panel-heading text-center">Instructions</div>
+                <div class="panel-heading text-center">Instructions (need larger font size)</div>
                 <div class="panel-body recipe-instructions-pad">
 
                     <div class="row recipe-instruction-item-pad">
