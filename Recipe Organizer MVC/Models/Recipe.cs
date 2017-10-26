@@ -27,18 +27,16 @@ namespace Recipe_Organizer_MVC.Models
         public string Notes { get; set; }
         public string CookingInstructions { get; set; }
         public List<string> MealType { get; set; }
-        public bool IsNewRecipe { get; set; }
+        public bool IsNew { get; set; }
         public bool IsEdited { get; set; }
-        public bool isDeleted { get; set; }
-        //private string IngredientsString { get; set; }
-        //private string InstructionsString { get; set; }
-        //public string MealTypeHtml { get; set; }
+        public bool IsDeleted { get; set; }
 
         public Recipe()
         {
             Instructions = new RecipeInstructionPart[INSTRUCTION_SET_MAX_SIZE];
             Ingredients = new RecipeIngredientPart[INGREDIENTS_SET_MAX_SIZE];
             MealType = new List<string>();
+            IsNew = IsEdited = IsDeleted = false;
         }
 
         public Recipe(DataRow row) : this()

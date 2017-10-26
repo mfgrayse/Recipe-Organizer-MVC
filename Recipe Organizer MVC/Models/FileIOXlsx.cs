@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Reflection;
+using Recipe_Organizer_MVC.Extensions;
 
 namespace Recipe_Organizer_MVC.Models
 {
@@ -16,7 +17,7 @@ namespace Recipe_Organizer_MVC.Models
             "Ingredients1", "Ingredients2", "Ingredients3", "Ingredients4", "Ingredients5", "Instructions1",
             "Instructions2", "Instructions3", "Instructions4", "Instructions5", "Notes" };
 
-        private string SheetName = "Recipe";
+        private string SheetName = "Recipes";
 
         public string FileName { get; set; }
         public string FilePath { get; set; }
@@ -25,7 +26,7 @@ namespace Recipe_Organizer_MVC.Models
             get { return FilePath + "\\" + FileName; }
         }
 
-        public FileIOXlsx(string file, string path)
+        public FileIOXlsx(string path, string file)
         {
             FileName = file;
             FilePath = path;
@@ -35,7 +36,7 @@ namespace Recipe_Organizer_MVC.Models
         {
             try
             {
-                return new Tuple<OleDbConnection, Exception>(new OleDbConnection(string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=No;IMEX=1\";", FullPath)), null);
+                return new Tuple<OleDbConnection, Exception>(new OleDbConnection(string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=Yes;\";", FullPath)), null);
             }
             catch (Exception ex)
             {
@@ -43,68 +44,42 @@ namespace Recipe_Organizer_MVC.Models
             }
         }
 
-        private Exception CreateFile()
+        private string CreateTableString()
         {
-
-            /*using System;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using Excel = Microsoft.Office.Interop.Excel; 
-
-namespace WindowsFormsApplication3
-{
-    public partial class Form1 : Form
-    {
-        public Form1()
-        {
-            InitializeComponent();
+            StringBuilder builder = new StringBuilder();
+            builder.Append(string.Format("CREATE TABLE {0} (", SheetName));
+            builder.Append(CreateSqlColumnString(true) + ")");
+            return builder.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public Exception CreateFile()
         {
-            Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
+            OleDbConnection conn = connectVal.Item1;
 
-            if (xlApp == null)
+            try
             {
-                MessageBox.Show("Excel is not properly installed!!");
-                return;
+                if (connectVal.Item2 != null)
+                    throw connectVal.Item2;
+
+                if (conn != null && conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                OleDbCommand command = new OleDbCommand();
+                command.Connection = conn;
+                command.CommandText = CreateTableString();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+            finally
+            {
+                if (conn.State != ConnectionState.Closed)
+                    conn.Close();
             }
 
-
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            
-            xlWorkSheet.Cells[1, 1] = "ID";
-            xlWorkSheet.Cells[1, 2] = "Name";
-            xlWorkSheet.Cells[2, 1] = "1";
-            xlWorkSheet.Cells[2, 2] = "One";
-            xlWorkSheet.Cells[3, 1] = "2";
-            xlWorkSheet.Cells[3, 2] = "Two";
-
-
-
-            xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            Marshal.ReleaseComObject(xlWorkSheet);
-            Marshal.ReleaseComObject(xlWorkBook);
-            Marshal.ReleaseComObject(xlApp);
-
-            MessageBox.Show("Excel file created , you can find the file d:\\csharp-Excel.xls");
-        }
-
-    }
-}*/
-
-
-
-
-            //*****
             return null;
         }
 
@@ -140,47 +115,39 @@ namespace WindowsFormsApplication3
             }
         }
 
+        private string CreateSqlColumnString(bool addDataTypes)
+        {
+            StringBuilder builder = new StringBuilder();
+            
+            foreach (string header in ColumnHeaderArr)
+                builder.Append(header + (addDataTypes ? " LongText": string.Empty)  + ",");
+            builder.Remove(builder.Length - 1, 1);
+            return builder.ToString();
+        }
+
         private string CreateInsertString(Recipe recipe)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append(string.Format("Insert into {0} (", SheetName));
-
-            foreach (string header in ColumnHeaderArr)
-                builder.Append(header + ",");
-
-            builder.Remove(builder.Length - 1, 1);
+            builder.Append(string.Format("Insert into [{0}$] (", SheetName));
+            builder.Append(CreateSqlColumnString(false));
             builder.Append(") values(");
 
-
-
-
-            /*        private string[] ColumnHeaderArr = { "Title", "Description", "CookMethod", "MealType",
-            "Ingredients1", "Ingredients2", "Ingredients3", "Ingredients4", "Ingredients5", "Instructions1",
-            "Instructions2", "Instructions3", "Instructions4", "Instructions5", "Notes" };
-*/
-
-
             //These need to be in order of columns in ColumnHeaderArr
-            builder.Append(string.Format("'{0}',", recipe.Title));
-            builder.Append(string.Format("'{0}',", recipe.Description));
-            builder.Append(string.Format("'{0}',", recipe.CookingInstructions));
+            builder.Append(string.Format("'{0}',", recipe.Title.SqlSafeString(false)));
+            builder.Append(string.Format("'{0}',", recipe.Description.SqlSafeString(false)));
+            builder.Append(string.Format("'{0}',", recipe.CookingInstructions.SqlSafeString(false)));
 
             StringBuilder mealTypeBuilder = new StringBuilder();
             foreach (string item in recipe.MealType)
-                mealTypeBuilder.Append(item + DELIMITER);
+                mealTypeBuilder.Append(item.SqlSafeString(false) + DELIMITER);
             mealTypeBuilder.Remove(mealTypeBuilder.Length - DELIMITER.Length, DELIMITER.Length);
             builder.Append(string.Format("'{0}',", mealTypeBuilder.ToString()));
             for (int i=0; i<Recipe.INGREDIENTS_SET_MAX_SIZE; i++)
-                builder.Append(string.Format("'{0}',", recipe.Ingredients[i].StringDelimited(DELIMITER)));
+                builder.Append(string.Format("'{0}',", recipe.Ingredients[i] != null ? recipe.Ingredients[i].StringDelimited(DELIMITER).SqlSafeString(false) : string.Empty));
             for (int i=0; i<Recipe.INSTRUCTION_SET_MAX_SIZE; i++)
-                builder.Append(string.Format("'{0}',", recipe.Instructions[i].StringDelimited(DELIMITER)));
-            builder.Append(string.Format("'{0}',", recipe.Notes));
-
+                builder.Append(string.Format("'{0}',", recipe.Instructions[i] != null ? recipe.Instructions[i].StringDelimited(DELIMITER).SqlSafeString(false) : string.Empty));
+            builder.Append(string.Format("'{0}'", recipe.Notes.SqlSafeString(false)));
             builder.Append(")");
-
-            //string.Format("Insert into {0} (id,name) values('5','e')", SheetName);
-
-            string foo = builder.ToString();
             return builder.ToString();
         }
 
@@ -204,11 +171,11 @@ namespace WindowsFormsApplication3
 
                 foreach (Recipe recipe in collection)
                 {
-                    if (recipe.isDeleted)
+                    if (recipe.IsDeleted)
                     {
                         //delete existing row
                     }
-                    else if (recipe.IsNewRecipe)
+                    else if (recipe.IsNew)
                     {
                         //insert into new row
                         command.CommandText = CreateInsertString(recipe);

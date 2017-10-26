@@ -40,6 +40,9 @@ namespace Recipe_Organizer_MVC.Models
         private Recipe ParseStringToProps(string htmlRecipe)
         {
             Recipe theRecipe = new Recipe();
+            theRecipe.IsDeleted = false;
+            theRecipe.IsEdited = false;
+            theRecipe.IsNew = true;
             theRecipe.Title = TagSubString(htmlRecipe, TITLE_START_TAG, TITLE_END_TAG);
             theRecipe.Description = TagSubString(htmlRecipe, RECIPE_DESCRIPTION_START_TAG, RECIPE_DESCRIPTION_END_TAG);
             theRecipe.Ingredients = ConvertIngredients(TagSubString(htmlRecipe, RECIPE_INGREDIENTS_START_TAG, RECIPE_INGREDIENTS_END_TAG));

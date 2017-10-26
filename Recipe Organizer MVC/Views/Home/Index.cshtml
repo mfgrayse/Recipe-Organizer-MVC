@@ -12,7 +12,10 @@
 
 @{ 
     Recipe_Organizer_MVC.Models.ConvertOldVersion oldVer = new Recipe_Organizer_MVC.Models.ConvertOldVersion();
-    int x = 0;
+    Recipe_Organizer_MVC.Models.FileIOXlsx fileIO = new Recipe_Organizer_MVC.Models.FileIOXlsx(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "recipes.xlsx");
+    //fileIO.CreateFile();
+    fileIO.WriteToFile(oldVer.RecipeColl);
+    //int x = 0;
 }
 
 <div class="well">
