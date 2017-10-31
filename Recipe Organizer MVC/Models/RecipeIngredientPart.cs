@@ -16,7 +16,20 @@ namespace Recipe_Organizer_MVC.Models
             ItemList = new List<Ingredient>();
         }
 
-        public string StringDelimited(string delimiter)
+        public RecipeIngredientPart(string ingredients, string delimiter) : this()
+        {
+            if (!string.IsNullOrWhiteSpace(ingredients))
+            {
+                string[] ingArr = ingredients.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+                int counter = ingredients.StartsWith(delimiter) ? 0 : 1;
+                SectionHeader = counter == 1 ? ingArr[0] : string.Empty;
+
+                for (; counter < ingArr.Length; counter++)
+                    ItemList.Add(new Ingredient(ingArr[counter]));
+            }
+        }
+
+        public string ToStringDelimited(string delimiter)
         {
             System.Text.StringBuilder builder = new System.Text.StringBuilder();
 

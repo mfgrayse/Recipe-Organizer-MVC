@@ -9,21 +9,18 @@ namespace Recipe_Organizer_MVC.Models
 {
     public class Recipe
     {
-        public const int INSTRUCTION_SET_MAX_SIZE = 5;
-        public const int INGREDIENTS_SET_MAX_SIZE = 5;
-
         public string Title { get; set; }
         public string Description { get; set; }
 
         /// <summary>
-        /// Array that is INGREDIENTS_SET_MAX_SIZE sets of ingredients. Each set can have any number ingredients.
+        /// List of sets of ingredients. Each set can have any number ingredients.
         /// </summary>
-        public IRecipeSectionPart<Ingredient>[] Ingredients { get; set; }
+        public List<IRecipeSectionPart<Ingredient>> Ingredients { get; set; }
 
         /// <summary>
-        /// Array that is INSTRUCTION_SET_MAX_SIZE sets of instructions. Each set can have any number instructions.
+        /// List of sets of instructions. Each set can have any number instructions.
         /// </summary>
-        public IRecipeSectionPart<string>[] Instructions { get; set; }
+        public List<IRecipeSectionPart<string>> Instructions { get; set; }
         public string Notes { get; set; }
         public string CookingInstructions { get; set; }
         public List<string> MealType { get; set; }
@@ -33,15 +30,37 @@ namespace Recipe_Organizer_MVC.Models
 
         public Recipe()
         {
-            Instructions = new RecipeInstructionPart[INSTRUCTION_SET_MAX_SIZE];
-            Ingredients = new RecipeIngredientPart[INGREDIENTS_SET_MAX_SIZE];
+            Instructions = new List<IRecipeSectionPart<string>>();
+            Ingredients = new List<IRecipeSectionPart<Ingredient>>();
             MealType = new List<string>();
             IsNew = IsEdited = IsDeleted = false;
         }
 
-        public Recipe(DataRow row) : this()
+        public Recipe(DataRow row, string titleCol, 
+            string descriptionCol, string cookMethodCol, string mealTypeCol, IList<string> ingredientsCols, 
+            IList<string> instructionsCols, string notesCol, string delimiter) : this()
         {
+            Title = row[titleCol].ToString().Trim();
+            Description = row[descriptionCol].ToString().Trim();
+            CookingInstructions = row[cookMethodCol].ToString().Trim();
+            MealType = row[mealTypeCol].ToString().Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
+            string recipePart = string.Empty;
+            for (int i = 0; i < ingredientsCols.Count; i++)
+            {
+                recipePart = row[ingredientsCols[i]].ToString();
+                if (!string.IsNullOrWhiteSpace(recipePart))
+                    Ingredients.Add(new RecipeIngredientPart(recipePart, delimiter));
+            }
+
+            for (int i = 0; i < ingredientsCols.Count; i++)
+            {
+                recipePart = row[instructionsCols[i]].ToString();
+                if (!string.IsNullOrWhiteSpace(recipePart))
+                    Instructions.Add(new RecipeInstructionPart(recipePart, delimiter));
+            }
+
+            Notes = row[notesCol].ToString().Trim();
         }
 
         public override string ToString()

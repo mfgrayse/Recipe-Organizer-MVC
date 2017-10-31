@@ -17,11 +17,14 @@ namespace Recipe_Organizer_MVC.Models
             this.Add(theRecipe);
         }
 
-        public RecipeCollection(DataTable table)
+        public RecipeCollection(DataTable table, string titleCol,
+            string descriptionCol, string cookMethodCol, string mealTypeCol, IList<string> ingredientsCols,
+            IList<string> instructionsCols, string notesCol, string delimiter)
         {
             foreach (DataRow row in table.Rows)
             {
-                this.Add(new Recipe(row));
+                this.Add(new Recipe(row, titleCol, descriptionCol, cookMethodCol, mealTypeCol, 
+                    ingredientsCols, instructionsCols, notesCol, delimiter));
             }
         }
 

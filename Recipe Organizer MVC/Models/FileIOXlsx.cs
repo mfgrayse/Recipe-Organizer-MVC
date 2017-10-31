@@ -13,11 +13,30 @@ namespace Recipe_Organizer_MVC.Models
     public class FileIOXlsx
     {
         public const string DELIMITER = "^^^";
-        private string[] ColumnHeaderArr = { "Title", "Description", "CookMethod", "MealType",
-            "Ingredients1", "Ingredients2", "Ingredients3", "Ingredients4", "Ingredients5", "Instructions1",
-            "Instructions2", "Instructions3", "Instructions4", "Instructions5", "Notes" };
+        public const string TITLE_COL = "Title";
+        public const string DESCRIPTION_COL = "Description";
+        public const string COOKMETHOD_COL = "Cookmethod";
+        public const string MEALTYPE_COL = "Mealtype";
+        public const string INGREDIENTS1_COL = "Ingredients1";
+        public const string INGREDIENTS2_COL = "Ingredients2";
+        public const string INGREDIENTS3_COL = "Ingredients3";
+        public const string INGREDIENTS4_COL = "Ingredients4";
+        public const string INGREDIENTS5_COL = "Ingredients5";
+        public const string INSTRUCTIONS1_COL = "Instructions1";
+        public const string INSTRUCTIONS2_COL = "Instructions2";
+        public const string INSTRUCTIONS3_COL = "Instructions3";
+        public const string INSTRUCTIONS4_COL = "Instructions4";
+        public const string INSTRUCTIONS5_COL = "Instructions5";
+        public const string NOTES_COL = "Notes";
+        public const int INSTRUCTION_SET_MAX_SIZE = 5;
+        public const int INGREDIENTS_SET_MAX_SIZE = 5;
 
-        private string SheetName = "Recipes";
+        private string[] ColumnHeaderArr = { TITLE_COL, DESCRIPTION_COL, COOKMETHOD_COL, MEALTYPE_COL,
+            INGREDIENTS1_COL, INGREDIENTS2_COL, INGREDIENTS3_COL, INGREDIENTS4_COL, INGREDIENTS5_COL,
+            INSTRUCTIONS1_COL, INSTRUCTIONS2_COL, INSTRUCTIONS3_COL, INSTRUCTIONS4_COL,
+            INSTRUCTIONS5_COL, NOTES_COL };
+        
+        public static string SheetName = "Recipes";
 
         public string FileName { get; set; }
         public string FilePath { get; set; }
@@ -52,6 +71,14 @@ namespace Recipe_Organizer_MVC.Models
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Creates an XLSX file with the correct column headers. Note that due to the limitations of the
+        /// OleDB provider for .NET, that LongText (columns that allow more than 255 chars) columns cannot be created
+        /// here. You must first manually open the file and manually insert a string with more than 255 chars into
+        /// each column. LongText inserts will then work properly provided the seed is not removed until real data
+        /// that is longer than 255 chars is inserted.
+        /// </summary>
+        /// <returns></returns>
         public Exception CreateFile()
         {
             Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
@@ -83,10 +110,18 @@ namespace Recipe_Organizer_MVC.Models
             return null;
         }
 
-        public RecipeCollection ReadFromFile(string query)
+        /// <summary>
+        /// Gets a recipe collection based on the query
+        /// </summary>
+        /// <param name="whereQueryPart">Send only the SQL style syntax for the WHERE clause, this method adds
+        /// the word WHERE automatically. Leave blank or NULL to get entire contents of file.</param>
+        /// <returns></returns>
+        public RecipeCollection ReadFromFile(string whereQueryPart)
         {
             Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
             OleDbConnection conn = connectVal.Item1;
+            string query = string.Format("Select * from [{0}$] where title not like '%aaaaaaaaaaaaaaaaaaaa%'{1}", 
+                SheetName, (string.IsNullOrWhiteSpace(whereQueryPart) ? string.Empty : " and " + whereQueryPart));
 
             try
             {
@@ -96,13 +131,14 @@ namespace Recipe_Organizer_MVC.Models
                 if (conn != null && conn.State == ConnectionState.Closed)
                     conn.Open();
 
-                //                OleDbDataAdapter dataAdapter = new OleDbDataAdapter("Select * from [G2WAttendee_xls$]", conn);
-                //****do we need to always filter out column header info or just when 'select *'?????
                 OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, conn);
 
                 DataSet dataSet = new DataSet();
                 dataAdapter.Fill(dataSet);
-                return new RecipeCollection(dataSet.Tables[0]);
+                return new RecipeCollection(dataSet.Tables[0], TITLE_COL, DESCRIPTION_COL, COOKMETHOD_COL, MEALTYPE_COL,
+                    new string[] { INGREDIENTS1_COL, INGREDIENTS2_COL, INGREDIENTS3_COL, INGREDIENTS4_COL, INGREDIENTS5_COL },
+                    new string[] { INSTRUCTIONS1_COL, INSTRUCTIONS2_COL, INSTRUCTIONS3_COL, INSTRUCTIONS4_COL, INSTRUCTIONS5_COL }, 
+                    NOTES_COL, DELIMITER );
             }
             catch (Exception ex)
             {
@@ -142,10 +178,10 @@ namespace Recipe_Organizer_MVC.Models
                 mealTypeBuilder.Append(item.SqlSafeString(false) + DELIMITER);
             mealTypeBuilder.Remove(mealTypeBuilder.Length - DELIMITER.Length, DELIMITER.Length);
             builder.Append(string.Format("'{0}',", mealTypeBuilder.ToString()));
-            for (int i=0; i<Recipe.INGREDIENTS_SET_MAX_SIZE; i++)
-                builder.Append(string.Format("'{0}',", recipe.Ingredients[i] != null ? recipe.Ingredients[i].StringDelimited(DELIMITER).SqlSafeString(false) : string.Empty));
-            for (int i=0; i<Recipe.INSTRUCTION_SET_MAX_SIZE; i++)
-                builder.Append(string.Format("'{0}',", recipe.Instructions[i] != null ? recipe.Instructions[i].StringDelimited(DELIMITER).SqlSafeString(false) : string.Empty));
+            for (int i = 0; i < INGREDIENTS_SET_MAX_SIZE; i++)
+                builder.Append(string.Format("'{0}',", recipe.Ingredients.Count > i && recipe.Ingredients[i] != null ? recipe.Ingredients[i].ToStringDelimited(DELIMITER).SqlSafeString(false) : string.Empty));
+            for (int i=0; i<INSTRUCTION_SET_MAX_SIZE; i++)
+                builder.Append(string.Format("'{0}',", recipe.Instructions.Count > i && recipe.Instructions[i] != null ? recipe.Instructions[i].ToStringDelimited(DELIMITER).SqlSafeString(false) : string.Empty));
             builder.Append(string.Format("'{0}'", recipe.Notes.SqlSafeString(false)));
             builder.Append(")");
             return builder.ToString();
@@ -167,7 +203,7 @@ namespace Recipe_Organizer_MVC.Models
                 OleDbCommand command = new OleDbCommand();
                 command.Connection = conn;
 
-                //*******start here....
+                //*******start here....test reading (full and partial) and do an update
 
                 foreach (Recipe recipe in collection)
                 {
@@ -202,39 +238,6 @@ namespace Recipe_Organizer_MVC.Models
                 if (conn.State != ConnectionState.Closed)
                     conn.Close();
             }
-
-
-
-
-            /*        /// <summary>
-        /// Attempts to save a new XLS file to the location the GoToWebinar Attendee report was read from. If the user
-        /// does not have write access to that folder, it attempts to save the file in their My Documents folder.
-        /// </summary>
-        /// <returns>True if file successfully saved</returns>
-        private bool SaveToFile()
-        {
-            outputFile = attendeeReportPath + "\\DTI_" + Path.GetFileNameWithoutExtension(txtAttendeeReport.Text) + ".xls";
-
-            if (!ExcelWorkbookUtil.Create(excelTable, outputFile))
-            {
-                MessageBox.Show("There was an error saving to " + outputFile + " attempting to save to My Documents.");
-                outputFile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\DTI_" + Path.GetFileNameWithoutExtension(txtAttendeeReport.Text) + ".xls";
-                
-                if (!ExcelWorkbookUtil.Create(excelTable, outputFile))
-                    MessageBox.Show("There was an error saving to My Documents, please contact IT for further " + 
-                        "assistance.", "Can't Save", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                return false;
-            }
-
-            return true;
-        }
-*/
-
-
-
-
-
 
         }
 

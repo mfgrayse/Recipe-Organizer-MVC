@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Recipe_Organizer_MVC.Models;
 
 namespace Recipe_Organizer_MVC.Controllers
 {
@@ -11,7 +12,7 @@ namespace Recipe_Organizer_MVC.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = "Your application description page.";
-            Models.Recipe foo = new Models.Recipe
+            Recipe foo = new Recipe()
             {
                 Title = "Pizza Crust",
                 Description = "Pizza or Calzone Crust",

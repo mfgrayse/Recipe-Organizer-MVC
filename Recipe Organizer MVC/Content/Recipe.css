@@ -12,7 +12,7 @@
 
 .recipe-ingredients-quantity {
     text-align: right;
-    color: forestgreen;
+    color: orangered;
     font-weight: bold;
     white-space: nowrap;
 }
@@ -26,16 +26,14 @@
 .recipe-directions-counter-box {
     position: relative;
     width: 20px;
-    /*content: counter(li);
-    counter-increment: li;*/
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 2.3vh;
-    color: black;
-    background-color: #dff0d8;
+    color: orangered;
     text-align: center;
     -webkit-font-smoothing: auto;
     box-sizing: border-box;
-    top: 0.7vh;
+    top: -0.3vh;
+    left: 1.6vw;
 }
 
 .recipe-directions-counter {
@@ -68,4 +66,20 @@
     position: relative;
     top: -1vh;
     padding-bottom: 1.7vh;
+}
+
+.recipe-panel-header-font {
+    font-size: 1.5vmax;
+}
+
+.recipe-set-part-ing {
+    color: forestgreen;
+    padding-left: 0.9vw;
+    font-style: italic;
+}
+
+.recipe-set-part-ins {
+    color: forestgreen;
+    padding-left: 1.9vw;
+    font-style: italic;
 }

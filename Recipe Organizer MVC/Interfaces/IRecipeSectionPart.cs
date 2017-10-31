@@ -13,6 +13,6 @@ namespace Recipe_Organizer_MVC.Interfaces
         List<T> ItemList { get; set; }
 
         //Methods
-        string StringDelimited(string delimiter);
+        string ToStringDelimited(string delimiter);
     }
 }

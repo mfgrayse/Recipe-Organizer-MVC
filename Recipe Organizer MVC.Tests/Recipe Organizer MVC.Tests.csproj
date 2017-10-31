@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Recipe Organizer MVC\Recipe Organizer MVC.csproj">
-      <Project>{C924FF34-2144-4D1A-A03A-6A32F5DCB93A}</Project>
+      <Project>{c924ff34-2144-4d1a-a03a-6a32f5dcb93a}</Project>
       <Name>Recipe Organizer MVC</Name>
     </ProjectReference>
   </ItemGroup>

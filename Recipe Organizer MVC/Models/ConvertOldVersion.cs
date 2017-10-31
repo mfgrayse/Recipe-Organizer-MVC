@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using Recipe_Organizer_MVC.Interfaces;
+using Recipe_Organizer_MVC.Models;
 
 namespace Recipe_Organizer_MVC.Models
 {
@@ -62,15 +63,16 @@ namespace Recipe_Organizer_MVC.Models
             return theRecipe;
         }
 
-        private IRecipeSectionPart<Ingredient>[] ConvertIngredients(string oldString)
+        private List<IRecipeSectionPart<Ingredient>> ConvertIngredients(string oldString)
         {
-            IRecipeSectionPart<Ingredient>[] ingredients = new RecipeIngredientPart[Recipe.INGREDIENTS_SET_MAX_SIZE];
+            List<IRecipeSectionPart<Ingredient>> ingredients = new List<IRecipeSectionPart<Ingredient>>();
 
             //Split on </li><li></li><li> to get sections
             string[] sectionArr = oldString.Split(new string[] { "</li><li></li><li>" }, StringSplitOptions.None);
             string[] ingredientArr, ingredientItemArr;
             int counter, quantCounter;
             string quantity, item;
+            RecipeIngredientPart rip;
 
             for (int i=0; i<sectionArr.Length; i++)
             {
@@ -86,15 +88,16 @@ namespace Recipe_Organizer_MVC.Models
                 sectionArr[i] = sectionArr[i].Replace("</i>", string.Empty);
                 sectionArr[i] = sectionArr[i].Replace(@"\t", string.Empty);
                 ingredientArr = sectionArr[i].Split(new string[] { "^^^" }, StringSplitOptions.None);
-                ingredients[i] = new RecipeIngredientPart();
+
+                rip = new RecipeIngredientPart();
 
                 if (sectionArr.Length > 1)
                 {
                     //If first item in array starts with a number, then header is string.empty, otherwise first item is header
-                    ingredients[i].SectionHeader = Char.IsDigit(ingredientArr[0][0]) ? string.Empty : ingredientArr[0];
+                    rip.SectionHeader = Char.IsDigit(ingredientArr[0][0]) ? string.Empty : ingredientArr[0];
                 }
 
-                counter = string.IsNullOrWhiteSpace(ingredients[i].SectionHeader) ? 0 : 1;
+                counter = string.IsNullOrWhiteSpace(rip.SectionHeader) ? 0 : 1;
                 for (; counter < ingredientArr.Length; counter++)
                 {
                     //Parse old ingredient line into seperate quantity, item
@@ -128,16 +131,17 @@ namespace Recipe_Organizer_MVC.Models
 
                     if (!string.IsNullOrWhiteSpace(item))
                         item = item.Remove(item.Length - 1, 1);
-                    ingredients[i].ItemList.Add(new Ingredient(quantity, item));
+                    rip.ItemList.Add(new Ingredient(quantity, item));
                 }
+                ingredients.Add(rip);
             }
             return ingredients;
         }
 
-        private IRecipeSectionPart<string>[] ConvertInstructions(string oldString)
+        private List<IRecipeSectionPart<string>> ConvertInstructions(string oldString)
         {
-            IRecipeSectionPart<string>[] instructions = new RecipeInstructionPart[Recipe.INSTRUCTION_SET_MAX_SIZE];
-            instructions[0] = new RecipeInstructionPart();
+            List<IRecipeSectionPart<string>> instructions = new List<IRecipeSectionPart<string>>();
+            RecipeInstructionPart rip = new RecipeInstructionPart();
             oldString = oldString.Replace("</p><p>", "^^^");
             oldString = oldString.Replace(@"</p>\r\n\t\t<p>", string.Empty);
             oldString = oldString.Replace("<p>", string.Empty);
@@ -152,7 +156,9 @@ namespace Recipe_Organizer_MVC.Models
             oldString = Regex.Replace(oldString, @"[0-9+]\. ", string.Empty);
             string[] instructionsArr = oldString.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in instructionsArr)
-                instructions[0].ItemList.Add(item);
+                rip.ItemList.Add(item);
+
+            instructions.Add(rip);
 
             return instructions;
         }
