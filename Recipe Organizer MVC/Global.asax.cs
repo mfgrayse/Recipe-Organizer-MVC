@@ -6,10 +6,6 @@
 //horiz phone HxW: ~380x680
 //preferred desktop HxW: ~835x1400 
 //estimated tablet HxW: ~580x1000
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using Recipe_Organizer_MVC.Interfaces;
-using Recipe_Organizer_MVC.Models;
 
 namespace Recipe_Organizer_MVC.Models
 {
@@ -171,9 +168,8 @@ namespace Recipe_Organizer_MVC.Models
             return text.Substring(start, end - start);
         }
 
-        private bool ConnectToFile()
+        private void ConnectToFile()
         {
-
             if (string.IsNullOrWhiteSpace(FilePath))
                 FilePath = DEFAULT_PATH;
 
@@ -184,20 +180,13 @@ namespace Recipe_Organizer_MVC.Models
 
             try
             {
-                textBuffer = ReadFromFile();
+                LoadFileTextToDict(ReadFromFile());
             }
             catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
 
-            if (!LoadFileTextToDict(textBuffer))
-            {
-                //MessageBox.Show("Error loading file contents into memory.");
-                return false;
-            }
-
-            return true;
         }
         private string FullPath
         {
@@ -209,31 +198,24 @@ namespace Recipe_Organizer_MVC.Models
             return System.IO.File.ReadAllText(FullPath, Encoding.UTF8);
         }
 
-        private bool LoadFileTextToDict(string fileText)
+        private void LoadFileTextToDict(string fileText)
         {
             try
             {
-                //RecipeColl = ParseRecipe(fileText);
                 RecipeColl = new RecipeCollection();
                 ParseRecipe(fileText);
-
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("Error loading file into ram: " + ex.Message);
-                return false;
+                throw ex;
             }
-
-            return true;
         }
 
-        //        private RecipeCollection ParseRecipe(string fileText)
         private void ParseRecipe(string fileText)
         {
             int index = 0;
             int start = 0;
             int end = 0;
-//            RecipeCollection recipeDict = new RecipeCollection();
             Recipe tempConcrete = null;
             bool endOfFile = false;
 
@@ -252,8 +234,6 @@ namespace Recipe_Organizer_MVC.Models
                 else
                     endOfFile = true;
             }
-
-  //          return recipeDict;
         }
     }
 }

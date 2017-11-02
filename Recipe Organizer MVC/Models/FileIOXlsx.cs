@@ -7,6 +7,7 @@ using System.Text;
 using System.Web;
 using System.Reflection;
 using Recipe_Organizer_MVC.Extensions;
+using Recipe_Organizer_MVC.Interfaces;
 
 namespace Recipe_Organizer_MVC.Models
 {
@@ -79,7 +80,7 @@ namespace Recipe_Organizer_MVC.Models
         /// that is longer than 255 chars is inserted.
         /// </summary>
         /// <returns></returns>
-        public Exception CreateFile()
+        public void CreateFile()
         {
             Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
             OleDbConnection conn = connectVal.Item1;
@@ -99,29 +100,19 @@ namespace Recipe_Organizer_MVC.Models
             }
             catch (Exception ex)
             {
-                return ex;
+                throw ex;
             }
             finally
             {
                 if (conn.State != ConnectionState.Closed)
                     conn.Close();
             }
-
-            return null;
         }
 
-        /// <summary>
-        /// Gets a recipe collection based on the query
-        /// </summary>
-        /// <param name="whereQueryPart">Send only the SQL style syntax for the WHERE clause, this method adds
-        /// the word WHERE automatically. Leave blank or NULL to get entire contents of file.</param>
-        /// <returns></returns>
-        public RecipeCollection ReadFromFile(string whereQueryPart)
+        public void ReadFromFile(Search searchObj)
         {
             Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
             OleDbConnection conn = connectVal.Item1;
-            string query = string.Format("Select * from [{0}$] where title not like '%aaaaaaaaaaaaaaaaaaaa%'{1}", 
-                SheetName, (string.IsNullOrWhiteSpace(whereQueryPart) ? string.Empty : " and " + whereQueryPart));
 
             try
             {
@@ -131,18 +122,18 @@ namespace Recipe_Organizer_MVC.Models
                 if (conn != null && conn.State == ConnectionState.Closed)
                     conn.Open();
 
-                OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, conn);
+                OleDbDataAdapter dataAdapter = new OleDbDataAdapter(searchObj.Query.GetQuery(SheetName), conn);
 
                 DataSet dataSet = new DataSet();
                 dataAdapter.Fill(dataSet);
-                return new RecipeCollection(dataSet.Tables[0], TITLE_COL, DESCRIPTION_COL, COOKMETHOD_COL, MEALTYPE_COL,
+                searchObj.TheRecipeCollection = new RecipeCollection(dataSet.Tables[0], TITLE_COL, DESCRIPTION_COL, COOKMETHOD_COL, MEALTYPE_COL,
                     new string[] { INGREDIENTS1_COL, INGREDIENTS2_COL, INGREDIENTS3_COL, INGREDIENTS4_COL, INGREDIENTS5_COL },
                     new string[] { INSTRUCTIONS1_COL, INSTRUCTIONS2_COL, INSTRUCTIONS3_COL, INSTRUCTIONS4_COL, INSTRUCTIONS5_COL }, 
                     NOTES_COL, DELIMITER );
             }
             catch (Exception ex)
             {
-                return new RecipeCollection(ex);
+                throw ex;
             }
             finally
             {
@@ -187,7 +178,7 @@ namespace Recipe_Organizer_MVC.Models
             return builder.ToString();
         }
 
-        public Exception WriteToFile(RecipeCollection collection)
+        public void WriteToFile(RecipeCollection collection)
         {
             Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
             OleDbConnection conn = connectVal.Item1;
@@ -222,16 +213,10 @@ namespace Recipe_Organizer_MVC.Models
                         //edit existing row
                     }
                 }
-
-
-
-
-
-                return null;
             }
             catch (Exception ex)
             {
-                return ex;
+                throw ex;
             }
             finally
             {

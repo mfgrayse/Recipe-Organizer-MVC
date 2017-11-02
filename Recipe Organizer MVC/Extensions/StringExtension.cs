@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Recipe_Organizer_MVC.Extensions
+﻿namespace Recipe_Organizer_MVC.Extensions
 {
     public static class StringExtension
     {

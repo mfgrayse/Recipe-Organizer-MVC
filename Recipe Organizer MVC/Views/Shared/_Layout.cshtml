@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -52,51 +53,53 @@
                             </div>
                         </div>
                     </form>
+
+
                     <form>
                         <div class="row no-pad well">
                             @*This div will be the search otions under title card (left) dont forget clear search button...*@
                             <div class="search-options">
+                                    @*this div is for search textbox and related*@
+                                    <div class="form-group move-search">
+                                        <input type="text" class="not-100-width" id="form-group-input" placeholder="Type search term here">
+                                        @*@Html.TextBoxFor(x => x.TextToSearchFor, new { @class= "not -100-width", id= "form-group-input", placeholder= "Type search term here" })*@
+                                        <button type="submit" class="btn btn-info btn-xs">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </div>
 
-                                @*this div is for search textbox and related*@
-                                <div class="form-group move-search">
-                                    <input type="text" class="not-100-width" id="form-group-input" placeholder="Type search term here">
-                                    <button type="button" class="btn btn-info btn-xs">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </div>
 
+    @*        private static string[] SearchItems = new string[] {"Title", "Meal Type", "Description", "Ingredients", "Instructions", "Cooking Method", "Notes"};
+        private static string[] MealTypes = new string[] { "Dinner", "Lunch", "Breakfast", "Dessert", "Drink", "Other"};
+    *@
 
-@*        private static string[] SearchItems = new string[] {"Title", "Meal Type", "Description", "Ingredients", "Instructions", "Cooking Method", "Notes"};
-    private static string[] MealTypes = new string[] { "Dinner", "Lunch", "Breakfast", "Dessert", "Drink", "Other"};
-*@
-
-                                @*this div is for search options and related*@
-                                <div class="form-group">
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading text-center">Search Options</div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label class="checkbox"><input type="checkbox" value="">Title</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Description</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Ingredients</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Dinner</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Lunch</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Breakfast</label>
-                                                </div>                                            
-                                                <div class="col-xs-6">
-                                                    <label class="checkbox"><input type="checkbox" value="">Instructions</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Cooking Method</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Notes</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Dessert</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Drink</label>
-                                                    <label class="checkbox"><input type="checkbox" value="">Meal: Other</label>
+                                    @*this div is for search options and related*@
+                                    <div class="form-group">
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading text-center">Search Options</div>
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <label class="checkbox"><input type="checkbox" value="">Title</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Description</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Ingredients</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Meal: Dinner</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Meal: Lunch</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Meal: Breakfast</label>
+                                                    </div>                                            
+                                                    <div class="col-xs-6">
+                                                        <label class="checkbox"><input type="checkbox" value="">Instructions</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Cooking Method</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Notes</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Meal: Dessert</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Meal: Drink</label>
+                                                        <label class="checkbox"><input type="checkbox" value="">Meal: Other</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </div>
+                                    </div>
 
                                 @*this div is for search results and related*@
                                 <div class="form-group">

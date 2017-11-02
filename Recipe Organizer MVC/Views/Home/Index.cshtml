@@ -8,6 +8,12 @@
     then: Just open task manager and kill any instances of VBCSCompiler.exe. 
     You don't even need to close Visual Studio.*@
 
+@*<div>@Model.Title</div>*@
+
+
+
+
+
 @{
     ViewBag.Title = "Home";
 }
@@ -20,11 +26,12 @@
 
 @{ 
     //ConvertOldVersion oldVer = new Recipe_Organizer_MVC.Models.ConvertOldVersion();
-    FileIOXlsx fileIO = new FileIOXlsx(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "recipes.xlsx");
+    //FileIOXlsx fileIO = new FileIOXlsx(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "recipes.xlsx");
     //fileIO.CreateFile();
     //fileIO.WriteToFile(oldVer.RecipeColl);
-    RecipeCollection collection = fileIO.ReadFromFile(null);
-    Recipe foo = collection[29];
+    //RecipeCollection collection = fileIO.ReadFromFile(null);
+    //Recipe foo = collection[29];
+    Recipe foo = new Recipe();
 
 
     int x = 0;
@@ -32,112 +39,121 @@
 
 <div class="well">
 
-
-    <div class="row"> @*Title and description section*@
-        <div class="col-xs-12">
-            <div class="jumbotron text-center recipe-color-blue jumbotron-pad">
-                <h1>@foo.Title</h1>
-                <p><small>@foo.Description</small></p>
+    @if (foo == null || string.IsNullOrWhiteSpace(foo.Title))
+    {
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h3>No Recipe Selected</h3>
             </div>
         </div>
-    </div>
-    <div class="row"> @*Cooking method section*@
-        <div class="col-xs-6 col-sm-offset-3 recipe-baking-pad">
-            <div class="well-sm text-center recipe-color-green">
-                <h4><i>@foo.CookingInstructions</i></h4>
-            </div>
-        </div>
-    </div>
-    <div class="row"> @*Ingredients and instructions sections*@
-        <div class="col-xs-5"> @*Ingredients section*@
-            <div class="panel panel-info">
-                <div class="panel-heading recipe-panel-header-font text-center">Ingredients</div>
-                <div class="panel-body">
-                    @for (int i=0; i<foo.Ingredients.Count; i++)
-                    {
-                        bool hasHeader = !string.IsNullOrWhiteSpace(foo.Ingredients[i].SectionHeader);
-                        if (hasHeader)
-                        {
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4 class="recipe-set-part-ing">@foo.Ingredients[i].SectionHeader</h4>
-                                </div>
-                            </div>
-                        }
-                        foreach (Ingredient ing in foo.Ingredients[i].ItemList)
-                        {
-                            <div class="row">
-                                <div class="recipe-ingredients-item-border"></div>
-                                <div class="col-xs-4 no-pad">
-                                    <div class="recipe-ingredients-quantity">@ing.Quantity</div>
-                                </div>
-                                <div class="col-xs-8">
-                                    <div class="recipe-ingredients-item">@ing.Item</div>
-                                </div>
-                            </div>
-                        }
-                        <div class="row">
-                            <div class="recipe-ingredients-item-border"></div>
-                        </div>
-
-                        if (hasHeader && i < foo.Ingredients.Count - 1)
-                        {
-                            <br />
-                        }
-                     }
+    }
+    else
+    {
+        <div class="row"> @*Title and description section*@
+            <div class="col-xs-12">
+                <div class="jumbotron text-center recipe-color-blue jumbotron-pad">
+                    <h1>@foo.Title</h1>
+                    <p><small>@foo.Description</small></p>
                 </div>
             </div>
         </div>
-        <div class="col-xs-7"> @*Instructions section*@
-            <div class="panel panel-info">
-                <div class="panel-heading recipe-panel-header-font text-center">Instructions</div>
-                <div class="panel-body recipe-instructions-pad">
-                    @for (int i=0; i<foo.Instructions.Count; i++)
-                     {
-                        bool hasHeader = !string.IsNullOrWhiteSpace(foo.Instructions[i].SectionHeader);
-                        if (hasHeader)
+        <div class="row"> @*Cooking method section*@
+            <div class="col-xs-6 col-sm-offset-3 recipe-baking-pad">
+                <div class="well-sm text-center recipe-color-green">
+                    <h4><i>@foo.CookingInstructions</i></h4>
+                </div>
+            </div>
+        </div>
+        <div class="row"> @*Ingredients and instructions sections*@
+            <div class="col-xs-5"> @*Ingredients section*@
+                <div class="panel panel-info">
+                    <div class="panel-heading recipe-panel-header-font text-center">Ingredients</div>
+                    <div class="panel-body">
+                        @for (int i = 0; i < foo.Ingredients.Count; i++)
                         {
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4 class="recipe-set-part-ins">@foo.Instructions[i].SectionHeader</h4>
-                                </div>
-                            </div>
-                        }
-                        for (int j = 1; j <= foo.Instructions[i].ItemList.Count; j++)
-                        {
-                            <div class="row recipe-instruction-item-pad">
-                                <div class="col-xs-2">
-                                    <div class="recipe-directions-counter-box pull-right">
-                                        <div class="recipe-directions-counter">@j.</div>
+                            bool hasHeader = !string.IsNullOrWhiteSpace(foo.Ingredients[i].SectionHeader);
+                            if (hasHeader)
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 class="recipe-set-part-ing">@foo.Ingredients[i].SectionHeader</h4>
                                     </div>
                                 </div>
-                                <div class="col-xs-10">
-                                    <div class="recipe-directions-item"><p>@foo.Instructions[i].ItemList[j-1]</p></div>
+                            }
+                            foreach (Ingredient ing in foo.Ingredients[i].ItemList)
+                            {
+                                <div class="row">
+                                    <div class="recipe-ingredients-item-border"></div>
+                                    <div class="col-xs-4 no-pad">
+                                        <div class="recipe-ingredients-quantity">@ing.Quantity</div>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <div class="recipe-ingredients-item">@ing.Item</div>
+                                    </div>
                                 </div>
+                            }
+                            <div class="row">
+                                <div class="recipe-ingredients-item-border"></div>
                             </div>
+
+                            if (hasHeader && i < foo.Ingredients.Count - 1)
+                            {
+                                <br />
+                            }
                         }
-                        if (hasHeader && i < foo.Instructions.Count - 1)
-                        {
-                            <br />
-                        }
-                     }
+                    </div>
                 </div>
             </div>
+            <div class="col-xs-7"> @*Instructions section*@
+                <div class="panel panel-info">
+                    <div class="panel-heading recipe-panel-header-font text-center">Instructions</div>
+                    <div class="panel-body recipe-instructions-pad">
+                        @for (int i = 0; i < foo.Instructions.Count; i++)
+                        {
+                            bool hasHeader = !string.IsNullOrWhiteSpace(foo.Instructions[i].SectionHeader);
+                            if (hasHeader)
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 class="recipe-set-part-ins">@foo.Instructions[i].SectionHeader</h4>
+                                    </div>
+                                </div>
+                            }
+                            for (int j = 1; j <= foo.Instructions[i].ItemList.Count; j++)
+                            {
+                                <div class="row recipe-instruction-item-pad">
+                                    <div class="col-xs-2">
+                                        <div class="recipe-directions-counter-box pull-right">
+                                            <div class="recipe-directions-counter">@j.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <div class="recipe-directions-item"><p>@foo.Instructions[i].ItemList[j - 1]</p></div>
+                                    </div>
+                                </div>
+                            }
+                            if (hasHeader && i < foo.Instructions.Count - 1)
+                            {
+                                <br />
+                            }
+                        }
+                    </div>
+                </div>
 
-        </div>
-    </div>
-    <div class="row"> @*Notes section*@
-        <div class="col-xs-10 col-sm-offset-1">
-            <div class="well-sm recipe-color-green">
-            @{
-                string tempString = string.IsNullOrWhiteSpace(foo.Notes) ? "None" : @foo.Notes;
-                <i> Notes: @tempString</i>
-            }
             </div>
+        </div>
+        <div class="row"> @*Notes section*@
+            <div class="col-xs-10 col-sm-offset-1">
+                <div class="well-sm recipe-color-green">
+                @{
+                    string tempString = string.IsNullOrWhiteSpace(foo.Notes) ? "None" : @foo.Notes;
+                    <i> Notes: @tempString</i>
+                }
+                </div>
+           </div>
        </div>
-   </div>
+    }
 </div>
 
 
 
-    @*<div>@Model.Title</div>*@
