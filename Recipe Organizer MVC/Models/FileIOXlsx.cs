@@ -109,7 +109,7 @@ namespace Recipe_Organizer_MVC.Models
             }
         }
 
-        public void ReadFromFile(Search searchObj)
+        public void ReadFromFile(ISearch searchObj)
         {
             Tuple<OleDbConnection, Exception> connectVal = ConnectToFile();
             OleDbConnection conn = connectVal.Item1;
@@ -123,7 +123,7 @@ namespace Recipe_Organizer_MVC.Models
                     conn.Open();
 
                 OleDbDataAdapter dataAdapter = new OleDbDataAdapter(searchObj.Query.GetQuery(SheetName), conn);
-
+                string foo = searchObj.Query.GetQuery(SheetName);
                 DataSet dataSet = new DataSet();
                 dataAdapter.Fill(dataSet);
                 searchObj.TheRecipeCollection = new RecipeCollection(dataSet.Tables[0], TITLE_COL, DESCRIPTION_COL, COOKMETHOD_COL, MEALTYPE_COL,

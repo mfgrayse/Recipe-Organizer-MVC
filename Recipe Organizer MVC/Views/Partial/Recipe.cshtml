@@ -1,0 +1,139 @@
+﻿@using Recipe_Organizer_MVC.Models
+@model Recipe
+
+
+
+@**if on clean, rebuild you get accesss denied to rosyln folders,
+    then: Just open task manager and kill any instances of VBCSCompiler.exe.
+    You don't even need to close Visual Studio.*@
+
+
+<head>
+    <link href="~/Content/Recipe.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<div class="well">
+
+    @if (Model == null || string.IsNullOrWhiteSpace(Model.Title))
+    {
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h3>No Recipe Selected</h3>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @*Title and description section*@
+            <div class="col-xs-12">
+                <div class="jumbotron text-center recipe-color-blue jumbotron-pad">
+                    <h2>@Model.Title</h2>
+                    <p><small>@Model.Description</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @*Cooking method section*@
+            <div class="col-xs-6 col-sm-offset-3 recipe-baking-pad">
+                <div class="well-sm text-center recipe-color-green">
+                    <h4><i>@Model.CookingInstructions</i></h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @*Ingredients and instructions sections*@
+            <div class="col-xs-5">
+                @*Ingredients section*@
+                <div class="panel panel-info">
+                    <div class="panel-heading recipe-panel-header-font text-center">Ingredients</div>
+                    <div class="panel-body">
+                        @for (int i = 0; i < Model.Ingredients.Count; i++)
+                        {
+                            bool hasHeader = !string.IsNullOrWhiteSpace(Model.Ingredients[i].SectionHeader);
+                            if (hasHeader)
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 class="recipe-set-part-ing">@Model.Ingredients[i].SectionHeader</h4>
+                                    </div>
+                                </div>
+                            }
+                            foreach (Ingredient ing in Model.Ingredients[i].ItemList)
+                            {
+                                <div class="row">
+                                    <div class="recipe-ingredients-item-border"></div>
+                                    <div class="col-xs-4 no-pad">
+                                        <div class="recipe-ingredients-quantity">@ing.Quantity</div>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <div class="recipe-ingredients-item">@ing.Item</div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="recipe-ingredients-item-border"></div>
+                            </div>
+
+                            if (hasHeader && i < Model.Ingredients.Count - 1)
+                            {
+                                <br />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-7">
+                @*Instructions section*@
+                <div class="panel panel-info">
+                    <div class="panel-heading recipe-panel-header-font text-center">Instructions</div>
+                    <div class="panel-body recipe-instructions-pad">
+                        @for (int i = 0; i < Model.Instructions.Count; i++)
+                        {
+                            bool hasHeader = !string.IsNullOrWhiteSpace(Model.Instructions[i].SectionHeader);
+                            if (hasHeader)
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4 class="recipe-set-part-ins">@Model.Instructions[i].SectionHeader</h4>
+                                    </div>
+                                </div>
+                            }
+                            for (int j = 1; j <= Model.Instructions[i].ItemList.Count; j++)
+                            {
+                                <div class="row recipe-instruction-item-pad">
+                                    <div class="col-xs-2">
+                                        <div class="recipe-directions-counter-box pull-right">
+                                            <div class="recipe-directions-counter">@j.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <div class="recipe-directions-item"><p>@Model.Instructions[i].ItemList[j - 1]</p></div>
+                                    </div>
+                                </div>
+                            }
+                            if (hasHeader && i < Model.Instructions.Count - 1)
+                            {
+                                <br />
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            @*Notes section*@
+            <div class="col-xs-10 col-sm-offset-1">
+                <div class="well-sm recipe-color-green">
+                    @{
+                        string tempString = string.IsNullOrWhiteSpace(Model.Notes) ? "None" : @Model.Notes;
+                        <i> Notes: @tempString</i>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

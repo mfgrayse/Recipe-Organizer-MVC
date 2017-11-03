@@ -11,6 +11,7 @@ namespace Recipe_Organizer_MVC.Models
     {
         public string TextToSearchFor { get; set; }
         public bool SearchInTitle { get; set; }
+        //add others....
 
         public ExcelQuery()
         {
@@ -25,8 +26,13 @@ namespace Recipe_Organizer_MVC.Models
         public string GetQuery(string sheetName)
         {
             StringBuilder builder = new StringBuilder();
-    //        string query = string.Format("Select * from [{0}$] where title not like '%aaaaaaaaaaaaaaaaaaaa%'{1}",
-    //SheetName, (string.IsNullOrWhiteSpace(whereQueryPart) ? string.Empty : " and " + whereQueryPart));
+
+
+            builder.Append(string.Format("Select * from [{0}$] where title not like '%aaaaaaaaaaaaaaaaaaaa%'{1}",
+                sheetName, (string.IsNullOrEmpty(TextToSearchFor) ? string.Empty : " and Title like '%"+ TextToSearchFor +"%'")));
+
+            //        string query = string.Format("Select * from [{0}$] where title not like '%aaaaaaaaaaaaaaaaaaaa%'{1}",
+            //SheetName, (string.IsNullOrWhiteSpace(whereQueryPart) ? string.Empty : " and " + whereQueryPart));
 
 
             return builder.ToString();

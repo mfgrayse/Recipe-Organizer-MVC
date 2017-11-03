@@ -1,0 +1,115 @@
+﻿@using Recipe_Organizer_MVC.Models
+@using Recipe_Organizer_MVC.Interfaces
+
+@model ISearch
+<head>
+    <link href="~/Content/MasterPage.css" rel="stylesheet" type="text/css" />
+    @*<script src="∼/Scripts/jquery-1.10.2.js"></script>
+    <script src="∼/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+    
+</head>
+
+<div class="row no-pad well">
+    @*This div will be the search otions under title card (left) dont forget clear search button...*@
+    <div class="search-options">
+        @using (Html.BeginForm("ExcelSearch", "Home"))
+        {
+            @*this div is for search textbox and related*@
+            <div class="form-group move-search">
+                @*<input type="text" class="not-100-width" id="form-group-input" placeholder="Type search term here">*@
+                @Html.TextBoxFor(x => x.Query.TextToSearchFor, new { @class = "not -100-width", id = "form-group-input", placeholder = "Type search term here" })
+                <button type="submit" class="btn btn-info btn-xs">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+
+
+            @*        private static string[] SearchItems = new string[] {"Title", "Meal Type", "Description", "Ingredients", "Instructions", "Cooking Method", "Notes"};
+                private static string[] MealTypes = new string[] { "Dinner", "Lunch", "Breakfast", "Dessert", "Drink", "Other"};
+            *@
+
+            @*this div is for search options and related*@
+            <div class="form-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading text-center">Search Options</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                @*<label class="checkbox"><input type="checkbox" value="">Title</label>*@
+                                <label class="checkbox">@Html.CheckBoxFor(x=>x.Query.SearchInTitle)Title</label>
+
+                                <label class="checkbox"><input type="checkbox" value="">Description</label>
+                                <label class="checkbox"><input type="checkbox" value="">Ingredients</label>
+                                <label class="checkbox"><input type="checkbox" value="">Meal: Dinner</label>
+                                <label class="checkbox"><input type="checkbox" value="">Meal: Lunch</label>
+                                <label class="checkbox"><input type="checkbox" value="">Meal: Breakfast</label>
+                            </div>
+                            <div class="col-xs-6">
+                                <label class="checkbox"><input type="checkbox" value="">Instructions</label>
+                                <label class="checkbox"><input type="checkbox" value="">Cooking Method</label>
+                                <label class="checkbox"><input type="checkbox" value="">Notes</label>
+                                <label class="checkbox"><input type="checkbox" value="">Meal: Dessert</label>
+                                <label class="checkbox"><input type="checkbox" value="">Meal: Drink</label>
+                                <label class="checkbox"><input type="checkbox" value="">Meal: Other</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+        @using (Html.BeginForm("SelectedRecipe", "Home"))
+        {
+            @*this div is for search results and related*@
+            <div class="form-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading text-center">Search Results</div>
+                    <div class="panel-body text-center" >
+                    @{ 
+                        RecipeCollection coll = (RecipeCollection)System.Web.HttpContext.Current.Session["RecipeColl"];
+
+                        if (coll == null || coll.Count == 0)
+                        {
+                            <div>No recipes loaded.</div>
+                        }
+                        else
+                        {
+                            <div class="btn-group-vertical">
+                                @{
+                                    string buttonTitle = string.Empty;
+
+                                    for (int i = 0; i < coll.Count; i++)
+                                    {
+                                        buttonTitle = coll[i].Title.Replace(" ", "^^^");
+
+
+                                        if (i % 2 == 0)
+                                        {
+                                            <button type="submit" name="submitRecipe" value=@buttonTitle class="btn btn-primary">@coll[i].Title</button>
+
+
+
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" name="submitRecipe" value=@buttonTitle class="btn btn-info">@coll[i].Title</button>
+
+                                        }
+                                    }
+                                }
+                            </div>
+                        }
+                    }
+
+                    </div>
+                </div>
+            </div>
+                        }
+
+
+    </div>
+</div>
+
+
+

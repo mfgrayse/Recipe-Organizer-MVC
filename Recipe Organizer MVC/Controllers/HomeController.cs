@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Recipe_Organizer_MVC.Models;
+using Recipe_Organizer_MVC.Interfaces;
 
 namespace Recipe_Organizer_MVC.Controllers
 {
@@ -12,32 +13,75 @@ namespace Recipe_Organizer_MVC.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = "Your application description page.";
-            //Recipe foo = new Recipe()
-            //{
-            //    Title = "Pizza Crust",
-            //    Description = "Pizza or Calzone Crust",
-            //    CookingInstructions = "Bake at 550 as Pizza about 10 mins or done",
-            //    //Ingredients = new List<List<string>> { new List<string> { "1 1/2 cups Water (luke-warm)", "1 package Yeast", "1 cup Wheat Flour", "3 cups Bread Flour", "1/8 tsp Salt", "1/8 tsp white pepper", "1/8 tsp Garlic Powder", "Parmesan Cheese", "1 tbsp Olive Oil" } },
-            //    //Instructions = new List<List<string>> { new List<string> { "1. Bloom yeast in luke-warm water, about 10 mins.", "2. Combine dry ingredients and cheese.", "3. Make well, pour in yeast water, combine until liquid absorbed.", "4. Knead on table 10-15 times.", "5. Coat rising bowl with olive oil, let dough rise about an hour.", "6. Punch down, knead 5-7 times, quarter, let rise another 10-15 mins.", "7. Create pizza/calzone crust by hand." } },
-            //    MealType = new List<string> { "Dinner", "Lunch" },
-            //    Notes = "These are the notes."
 
-            //};
 
-            //return View(foo);
+            //ConvertOldVersion oldVer = new Recipe_Organizer_MVC.Models.ConvertOldVersion();
+            //FileIOXlsx fileIO = new FileIOXlsx(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "recipes.xlsx");
+            //fileIO.CreateFile();
+            //fileIO.WriteToFile(oldVer.RecipeColl);
+            //ISearch search = new ExcelSearch();
+            //fileIO.ReadFromFile(search);
+            //return View(search.TheRecipeCollection[3]);
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Edit()
         {
             return View();
         }
 
-        //public ActionResult Contact()
-        //{
-        //    ViewBag.Message = "Your contact page.";
+        [HttpPost]
+        public ActionResult ExcelSearch(ExcelSearch searchObj)
+        {
+            FileIOXlsx fileIO = new FileIOXlsx(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "recipes.xlsx");
+            fileIO.ReadFromFile(searchObj);
+            System.Web.HttpContext.Current.Session["RecipeColl"] = searchObj.TheRecipeCollection;
+            return View("Index");
+        }
 
-        //    return View();
+        [HttpPost]
+        public ActionResult SelectedRecipe(string submitRecipe)
+        {
+            RecipeCollection coll = (RecipeCollection)System.Web.HttpContext.Current.Session["RecipeColl"];
+            Recipe selected = null;
+
+            for (int i = 0; i < coll.Count; i++)
+            {
+                if (coll[i].Title.Equals(submitRecipe.Replace("^^^", " ")))
+                {
+                    selected = coll[i];
+                    break;
+                }
+            }
+
+            return View("Index", selected);
+        }
+
+
+        //[HttpPost]
+        //public ActionResult SelectedRecipe(string submitRecipe)
+        //{
+        //    RecipeCollection coll = (RecipeCollection)ViewData["RecipeColl"];
+        //    Recipe selected = null;
+
+        //    for (int i=0; i< coll.Count; i++)
+        //    {
+        //        if (coll[i].Title.Equals(submitRecipe))
+        //        {
+        //            selected = coll[i];
+        //            break;
+        //        }
+        //    }
+
+        //    return View("Index", selected);
+        //}
+
+
+        //[HttpPost]
+        //public ActionResult SelectedRecipe(Tuple<Recipe, ISearch> recipes)
+        //{
+        //    ViewData["RecipeColl"] = recipes.Item2;
+        //    return View("Index", recipes.Item1);
         //}
     }
 }

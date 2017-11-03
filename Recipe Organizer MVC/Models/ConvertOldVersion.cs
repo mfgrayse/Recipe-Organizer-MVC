@@ -227,7 +227,6 @@ namespace Recipe_Organizer_MVC.Models
                 if (start >= 0 && end >= 0)
                 {
                     tempConcrete = ParseStringToProps(fileText.Substring(start, end - start));
-                    //                    recipeDict.Add(tempConcrete);
                     RecipeColl.Add(tempConcrete);
                     index = end;
                 }
