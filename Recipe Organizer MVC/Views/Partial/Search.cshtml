@@ -9,24 +9,27 @@
     
 </head>
 
+@{ 
+    if (System.Web.HttpContext.Current.Session["SearchObject"] != null)
+    {
+        ISearch obj = (ISearch)System.Web.HttpContext.Current.Session["SearchObject"];
+        Model.Query = obj.Query;
+        Model.TheRecipeCollection = obj.TheRecipeCollection;
+    }
+}
+
 <div class="row no-pad well">
-    @*This div will be the search otions under title card (left) dont forget clear search button...*@
     <div class="search-options">
         @using (Html.BeginForm("ExcelSearch", "Home"))
         {
             @*this div is for search textbox and related*@
             <div class="form-group move-search">
                 @*<input type="text" class="not-100-width" id="form-group-input" placeholder="Type search term here">*@
-                @Html.TextBoxFor(x => x.Query.TextToSearchFor, new { @class = "not -100-width", id = "form-group-input", placeholder = "Type search term here" })
+                @Html.TextBoxFor(x => x.Query.TextToSearchFor, new { @class = "not-100-width", id = "form-group-input", placeholder = "Type search term here" })
                 <button type="submit" class="btn btn-info btn-xs">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
             </div>
-
-
-            @*        private static string[] SearchItems = new string[] {"Title", "Meal Type", "Description", "Ingredients", "Instructions", "Cooking Method", "Notes"};
-                private static string[] MealTypes = new string[] { "Dinner", "Lunch", "Breakfast", "Dessert", "Drink", "Other"};
-            *@
 
             @*this div is for search options and related*@
             <div class="form-group">
@@ -67,7 +70,8 @@
                     <div class="panel-heading text-center">Search Results</div>
                     <div class="panel-body text-center" >
                     @{ 
-                        RecipeCollection coll = (RecipeCollection)System.Web.HttpContext.Current.Session["RecipeColl"];
+                        RecipeCollection coll = System.Web.HttpContext.Current.Session["SearchObject"] != null ?
+                            ((ISearch)System.Web.HttpContext.Current.Session["SearchObject"]).TheRecipeCollection : null;
 
                         if (coll == null || coll.Count == 0)
                         {
@@ -81,33 +85,25 @@
 
                                     for (int i = 0; i < coll.Count; i++)
                                     {
-                                        buttonTitle = coll[i].Title.Replace(" ", "^^^");
-
+                                        buttonTitle = coll[i].Title.Replace(" ", Recipe_Organizer_MVC.Controllers.HomeController.BUTTON_SPACE_REPLACE);
 
                                         if (i % 2 == 0)
                                         {
                                             <button type="submit" name="submitRecipe" value=@buttonTitle class="btn btn-primary">@coll[i].Title</button>
-
-
-
                                         }
                                         else
                                         {
                                             <button type="submit" name="submitRecipe" value=@buttonTitle class="btn btn-info">@coll[i].Title</button>
-
                                         }
                                     }
                                 }
                             </div>
                         }
                     }
-
                     </div>
                 </div>
             </div>
-                        }
-
-
+        }
     </div>
 </div>
 

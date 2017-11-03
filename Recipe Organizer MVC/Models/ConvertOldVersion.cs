@@ -47,9 +47,7 @@ namespace Recipe_Organizer_MVC.Models
             theRecipe.Instructions = ConvertInstructions(TagSubString(htmlRecipe, RECIPE_INSTRUCTIONS_START_TAG, RECIPE_INSTRUCTIONS_END_TAG));
             theRecipe.Notes = TagSubString(htmlRecipe, RECIPE_NOTES_START_TAG, RECIPE_NOTES_END_TAG);
             theRecipe.CookingInstructions = TagSubString(htmlRecipe, COOK_TYPE_START_TAG, COOK_TYPE_END_TAG);
-
             string tempItem = string.Empty;
-            //theRecipe.MealType = new List<string>();
 
             foreach (string item in TagSubString(htmlRecipe, MEAL_TYPE_START_TAG, MEAL_TYPE_END_TAG).Split(','))
             {

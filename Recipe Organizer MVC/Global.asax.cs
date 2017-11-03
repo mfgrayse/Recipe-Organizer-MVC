@@ -6,6 +6,11 @@
 //horiz phone HxW: ~380x680
 //preferred desktop HxW: ~835x1400 
 //estimated tablet HxW: ~580x1000
+
+/*if on clean, rebuild you get accesss denied to rosyln folders,
+    then: Just open task manager and kill any instances of VBCSCompiler.exe.
+    You don't even need to close Visual Studio.*/
+
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
