@@ -1,0 +1,14 @@
+﻿.vcenter-title {
+    position: relative;
+    top: -0.7vh;
+}
+
+.vcenter-method {
+    position: relative;
+    top: 0.9vh;
+}
+
+.save-button-pad {
+    position: relative;
+    top: 2.0vh;
+}

@@ -6,5 +6,6 @@ namespace Recipe_Organizer_MVC.Interfaces
     {
         IQuery Query { get; set; }
         RecipeCollection TheRecipeCollection { get; set; }
+        Recipe SelectedRecipe { get; set; }
     }
 }

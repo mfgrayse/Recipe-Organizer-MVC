@@ -14,11 +14,18 @@ namespace Recipe_Organizer_MVC.Interfaces
   //  MealTypes = "Dinner", "Lunch", "Breakfast", "Dessert", "Drink", "Other" };
   
         string TextToSearchFor { get; set; }
-        bool SearchInTitle { get; set; }
-        //bool SearchInDescription { get; set; }
-        //bool SearchInIngredients { get; set; }
-        //bool SearchInInstructions { get; set; }
-        //bool SearchInCookingMethod { get; set; }
+        bool SearchTitle { get; set; }
+        bool SearchDescription { get; set; }
+        bool SearchIngredients { get; set; }
+        bool SearchInstructions { get; set; }
+        bool SearchCookingMethod { get; set; }
+        bool SearchNotes { get; set; }
+        bool SearchMTDinner { get; set; }
+        bool SearchMTLunch { get; set; }
+        bool SearchMTBreakfast { get; set; }
+        bool SearchMTDessert { get; set; }
+        bool SearchMTDrink { get; set; }
+        bool SearchMTOther { get; set; }
 
 
         /// <summary>

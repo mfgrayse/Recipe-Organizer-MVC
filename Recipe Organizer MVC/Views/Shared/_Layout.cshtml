@@ -1,4 +1,5 @@
 ﻿@using Recipe_Organizer_MVC.Models
+@using Recipe_Organizer_MVC.Interfaces
 
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,11 @@
     <style></style>
 </head>
 <body>
+
+    @{ 
+        ISearch searchObj = (ISearch)System.Web.HttpContext.Current.Session["SearchObject"];
+    }
+
     <div class="container-fluid page-pad">
         <div class="row-fluid">
             <div class="col-xs-3 no-pad">
@@ -24,25 +30,36 @@
                 <div class="row"></div>
                 <div class="row"></div>
                 <div class="row"></div>
-                <form>
+                @using (Html.BeginForm("Edit", "Home"))
+                {
                     <div class="row no-pad well">
                         <div class="form-group buttons">
                             <div class="btn-group" role="group">
                                 <div class="center-buttons">
-                                    <button type="button" class="btn btn-primary">New Recipe</button>
-                                    <button type="button" class="btn btn-primary">Edit Recipe</button>
+                                    <button type="submit" name="buttonVal" value="new" class="btn btn-primary">New Recipe</button>
+
+                                    @if (searchObj == null || searchObj.SelectedRecipe == null)
+                                    {
+                                        //This needs to be an input so the triple-click won't select the text when disabled
+                                        <input type="button" class="btn btn-primary disabled" value="Edit Recipe">
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" name="buttonVal" value="edit" class="btn btn-primary">Edit Recipe</button>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                }
                 @{ Html.RenderPartial("~/Views/Partial/Search.cshtml", new ExcelSearch()); }
             </div>
             <div class="col-xs-9">
-                @RenderBody() @*this could be 'recipe' (index from home con) or 'edit' (edit from home con)*@
+                @RenderBody() 
             </div>
         </div>
     </div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

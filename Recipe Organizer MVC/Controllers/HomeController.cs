@@ -21,33 +21,58 @@ namespace Recipe_Organizer_MVC.Controllers
         }
 
         [HttpPost]
+        public ActionResult Update(Recipe recipe)
+        {
+            ISearch searchObj = (ISearch)System.Web.HttpContext.Current.Session["SearchObject"];
+            searchObj.SelectedRecipe = recipe;
+
+            //***update excel here....then grab recipe from excel and display
+
+
+            return View("Index", searchObj.SelectedRecipe);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(string buttonVal)
+        {
+            ISearch searchObj = (ISearch)System.Web.HttpContext.Current.Session["SearchObject"];
+
+            if (buttonVal.Equals("edit") && searchObj != null && searchObj.SelectedRecipe != null)
+                return View(searchObj.SelectedRecipe);
+
+            return View(new Recipe());
+        }
+
+        [HttpPost]
         public ActionResult ExcelSearch(ExcelSearch searchObj)
         {
             FileIOXlsx fileIO = new FileIOXlsx(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "recipes.xlsx");
             fileIO.ReadFromFile(searchObj);
+            searchObj.TheRecipeCollection.Sort((r1,r2)=>r1.Title.CompareTo(r2.Title));
+            searchObj.SelectedRecipe = searchObj.TheRecipeCollection.Count > 0 ? searchObj.TheRecipeCollection[0] : null;
             System.Web.HttpContext.Current.Session["SearchObject"] = searchObj;
-            return View("Index");
+            return View("Index", searchObj.SelectedRecipe);
         }
 
         [HttpPost]
-        public ActionResult SelectedRecipe(string submitRecipe)
+        public ActionResult SelectedRecipe(string buttonVal)
         {
-            RecipeCollection coll = ((ISearch)System.Web.HttpContext.Current.Session["SearchObject"]).TheRecipeCollection;
-            Recipe selected = null;
+            ISearch searchObj = (ISearch)System.Web.HttpContext.Current.Session["SearchObject"];
 
-            for (int i = 0; i < coll.Count; i++)
+            if (searchObj == null || searchObj.TheRecipeCollection == null || searchObj.TheRecipeCollection.Count == 0)
+                return View("Index", null);
+
+            //Find the recipe based on button text
+            for (int i = 0; i < searchObj.TheRecipeCollection.Count; i++)
             {
-                //This parses the chosen (via click) recipe button's value that is automatically passed as a string.
-                //The button's value is the name of the recipe with spaces replaced by ^^^ since there can't be spaces
-                //in the button's value property.
-                if (coll[i].Title.Equals(submitRecipe.Replace(BUTTON_SPACE_REPLACE, " ")))
+                if (searchObj.TheRecipeCollection[i].Title.Equals(buttonVal))
                 {
-                    selected = coll[i];
+                    searchObj.SelectedRecipe = searchObj.TheRecipeCollection[i];
                     break;
                 }
             }
 
-            return View("Index", selected);
+            return View("Index", searchObj.SelectedRecipe);
         }
     }
 }

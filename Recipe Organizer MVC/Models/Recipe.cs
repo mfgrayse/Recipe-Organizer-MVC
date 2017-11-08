@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using Recipe_Organizer_MVC.Interfaces;
@@ -8,6 +9,14 @@ namespace Recipe_Organizer_MVC.Models
 {
     public class Recipe
     {
+        public const string MT_DINNER = "Dinner";
+        public const string MT_LUNCH = "Lunch";
+        public const string MT_BREAKFAST = "Breakfast";
+        public const string MT_DRINK = "Drink";
+        public const string MT_DESSERT = "Dessert";
+        public const string MT_OTHER = "Other";
+
+        [Required(AllowEmptyStrings = false)]
         public string Title { get; set; }
         public string Description { get; set; }
 

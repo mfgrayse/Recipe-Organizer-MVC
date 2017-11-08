@@ -38,22 +38,20 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-6">
-                                @*<label class="checkbox"><input type="checkbox" value="">Title</label>*@
-                                <label class="checkbox">@Html.CheckBoxFor(x=>x.Query.SearchInTitle)Title</label>
-
-                                <label class="checkbox"><input type="checkbox" value="">Description</label>
-                                <label class="checkbox"><input type="checkbox" value="">Ingredients</label>
-                                <label class="checkbox"><input type="checkbox" value="">Meal: Dinner</label>
-                                <label class="checkbox"><input type="checkbox" value="">Meal: Lunch</label>
-                                <label class="checkbox"><input type="checkbox" value="">Meal: Breakfast</label>
-                            </div>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchTitle)Title</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchDescription)Description</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchIngredients)Ingredients</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchMTDinner)Meal: Dinner</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchMTLunch)Meal: Lunch</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchMTBreakfast)Meal: Breakfast</label>
+                            </div>                      
                             <div class="col-xs-6">
-                                <label class="checkbox"><input type="checkbox" value="">Instructions</label>
-                                <label class="checkbox"><input type="checkbox" value="">Cooking Method</label>
-                                <label class="checkbox"><input type="checkbox" value="">Notes</label>
-                                <label class="checkbox"><input type="checkbox" value="">Meal: Dessert</label>
-                                <label class="checkbox"><input type="checkbox" value="">Meal: Drink</label>
-                                <label class="checkbox"><input type="checkbox" value="">Meal: Other</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchInstructions)Instructions</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchCookingMethod)Cooking Method</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchNotes)Notes</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchMTDessert)Meal: Dessert</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchMTDrink)Meal: Drink</label>
+                                <label class="checkbox">@Html.CheckBoxFor(x => x.Query.SearchMTOther)Meal: Other</label>
                             </div>
                         </div>
                     </div>
@@ -81,19 +79,19 @@
                         {
                             <div class="btn-group-vertical">
                                 @{
-                                    string buttonTitle = string.Empty;
+                                    //string buttonTitle = string.Empty;
 
                                     for (int i = 0; i < coll.Count; i++)
                                     {
-                                        buttonTitle = coll[i].Title.Replace(" ", Recipe_Organizer_MVC.Controllers.HomeController.BUTTON_SPACE_REPLACE);
+                                        //buttonTitle = coll[i].Title.Replace(" ", Recipe_Organizer_MVC.Controllers.HomeController.BUTTON_SPACE_REPLACE);
 
                                         if (i % 2 == 0)
                                         {
-                                            <button type="submit" name="submitRecipe" value=@buttonTitle class="btn btn-primary">@coll[i].Title</button>
+                                            <button type="submit" name="buttonVal" value="@coll[i].Title" class="btn btn-primary">@coll[i].Title</button>
                                         }
                                         else
                                         {
-                                            <button type="submit" name="submitRecipe" value=@buttonTitle class="btn btn-info">@coll[i].Title</button>
+                                            <button type="submit" name="buttonVal" value="@coll[i].Title" class="btn btn-info">@coll[i].Title</button>
                                         }
                                     }
                                 }
